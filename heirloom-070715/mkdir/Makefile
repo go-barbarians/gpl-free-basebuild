@@ -180,7 +180,7 @@ LDFLAGS =
 # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
 # On NetBSD, add -DUSE_TERMCAP.
 #
-CPPFLAGS = -D_GNU_SOURCE
+CPPFLAGS =
 
 #
 # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
