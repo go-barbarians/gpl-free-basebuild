@@ -127,7 +127,7 @@ TTYGRP = -g utmp
 # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
 # to CPPFLAGS.
 #
-LCURS = -lcurses
+LCURS = -lncurses -ltinfo
 
 #
 # Socket library, necessary on Solaris and Open UNIX. If your system has
@@ -180,7 +180,7 @@ LDFLAGS =
 # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
 # On NetBSD, add -DUSE_TERMCAP.
 #
-CPPFLAGS =
+CPPFLAGS = -D_GNU_SOURCE
 
 #
 # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special

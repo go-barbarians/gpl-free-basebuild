@@ -127,7 +127,7 @@ TTYGRP = -g utmp
 # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
 # to CPPFLAGS.
 #
-LCURS = -lncurses -ltinfo
+LCURS = -lcurses -ltinfo
 
 #
 # Socket library, necessary on Solaris and Open UNIX. If your system has
@@ -284,7 +284,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 
 UCBINST = install
 
-ICOMMON = -I../libcommon -I/work/barbarians/base-image/ncurses/ncursesw
+ICOMMON = -I../libcommon -I/work/barbarians/base-image/ncurses/ncursesw -I/work/barbarians/base-image/target/sysroot/usr/local/include
 LCOMMON = -L/usr/lib/x86_64-linux-gnu/ -L../libcommon -lcommon -L/work/barbarians/base-image/ncurses/ncursesw
 
 IUXRE = -I../libuxre -DUXRE
