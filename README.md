@@ -14,7 +14,7 @@ The image includes:
 * [python2.7](https://www.python.org/download/releases/2.7/)
 * [heirloom UNIX tools](http://heirloom.sourceforge.net/tools.html) (SCO & Sun donations)
 * [openssl](https://www.openssl.org/)
-* Apache Harmony[https://harmony.apache.org/]
+* [Apache Harmony](https://harmony.apache.org/)
 * [musl libc](https://www.musl-libc.org/) as a replacement for glibc 
 
 Additionally the image statically links ncurses, which while part of the GNU toolset, is MIT licensed.
