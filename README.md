@@ -4,17 +4,18 @@ Copyright Barbarians 2018. https://barbarians.io
 
 ## About this repo
 
-This repository contains a GPL-free (mostly derived from BSD) base image for Docker containers. The biggest limitation at the moment is Java - Apache Harmony ceased operations in 2010 leaving a void that has not yet been filled.
+This repository contains a GPL-free (mostly derived from BSD) base image for Docker containers. The biggest limitation at the moment is Java - Apache Harmony ceased operations in 2010 leaving a void that has not yet been filled. Google went a different path but still use Apache Harmony extensively for its Java Class Library.
 
 As such we bake in Apache Harmony but it is more useful to remotely fetch an open-jdk kit once the image is deployed. You can do this with the onboard Python.
 
 The image includes:
 
-* mksh
-* python2.7
-* heirloom UNIX tools (SCO & Sun donations)
-* Apache Harmony
-* musl as a drop in replacement for glibc 
+* [mksh](http://www.mirbsd.org/mksh.htm)
+* [python2.7](https://www.python.org/download/releases/2.7/)
+* [heirloom UNIX tools](http://heirloom.sourceforge.net/tools.html) (SCO & Sun donations)
+* [openssl](https://www.openssl.org/)
+* Apache Harmony[https://harmony.apache.org/]
+* [musl libc](https://www.musl-libc.org/) as a replacement for glibc 
 
 ## What needs to be done
 
