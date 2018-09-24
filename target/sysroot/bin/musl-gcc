@@ -1,0 +1,2 @@
+#!/bin/sh
+exec "${REALGCC:-gcc}" "$@" -specs "/work/barbarians/base-image/target/musl/lib/musl-gcc.specs"
