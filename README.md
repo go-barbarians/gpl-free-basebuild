@@ -17,9 +17,13 @@ The image includes:
 * Apache Harmony[https://harmony.apache.org/]
 * [musl libc](https://www.musl-libc.org/) as a replacement for glibc 
 
+Additionally the image statically links ncurses, which while part of the GNU toolset, is MIT licensed.
+
+Note that the tools ```expr``` and ```bc``` are removed from the image as they're GPL.
+
 ## What needs to be done
 
-This image is a first attempt. mksh really sucks. Heirloom BOURNE shell will be better.
+This image is a first attempt. IMHO mksh really sucks. Heirloom BOURNE shell could be better.
 
 ## About Barbarians
 
