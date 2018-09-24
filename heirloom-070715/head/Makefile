@@ -25,7 +25,7 @@ POSIX_SHELL = /bin/sh
 # Root directory. Mainly useful for package building; leave empty for
 # normal installation.
 #
-ROOT =
+ROOT = /work/barbarians/base-image/target/sysroot
 
 #
 # Location for binaries that have no special personality. This location
@@ -282,7 +282,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 ########################################################################
 ########################################################################
 
-UCBINST = $(ROOT)$(UCBBIN)/install
+UCBINST = install
 
 ICOMMON = -I../libcommon
 LCOMMON = -L../libcommon -lcommon
