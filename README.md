@@ -47,7 +47,7 @@ The Barbarian Data System is an in-memory, parallel, distributed (MPP) data ware
 
 * As an in-memory, standalone data warehousing system
 * As a data warehousing system backed by an external storage system like Amazon S3
-* In a hybrid mode, where primary storage is the integrated in-memory distributed filesystem, and external storage is mounted at '/external'
+* In a hybrid mode, where primary storage is the external storage system with common paths mounted to the in-memory filesystem
 
 Barbarian includes compelling features including Apache Hive LLAP and Tez, with transactional tables enabled by default.
 
