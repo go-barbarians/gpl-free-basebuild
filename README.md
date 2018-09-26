@@ -23,7 +23,20 @@ Note that the tools ```expr``` and ```bc``` are removed from the image as they'r
 
 ## What needs to be done
 
-This image is a first attempt. IMHO mksh really sucks. Heirloom BOURNE shell could be better.
+This image is a first release and will improve over time.
+
+## Using this image
+
+This image is a base image that you can use to build upon. If you want to inspect it, have a look at our [github repo](https://github.com/go-barbarians/gpl-free-basebuild).
+
+If you just want to try it out, run these commands:
+```docker run -it dockerbarbarians/gpl-free-base-image /bin/mksh```
+
+You will be dropped into a Mir Korn shell (mksh) where you can try out, for example, the bundled python runtime at ```/opt/python27```.
+
+### Deploying your own applications on this image
+
+Since this image does not include GNU glibc, you will need to compile your application using musl-gcc linked to the musl libc implementation. Alternatively you could bring your own glibc, or download it from within the container.
 
 ## About Barbarians
 
