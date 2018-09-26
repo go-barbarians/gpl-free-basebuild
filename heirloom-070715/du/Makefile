@@ -285,7 +285,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 UCBINST = install
 
 ICOMMON = -I../libcommon -I/work/barbarians/base-image/ncurses/ncursesw
-LCOMMON = -L/usr/lib/x86_64-linux-gnu/ -L../libcommon -lcommon -L/work/barbarians/base-image/ncurses/ncursesw
+LCOMMON = -L/usr/lib/x86_64-linux-musl/ -L../libcommon -lcommon -L/work/barbarians/base-image/ncurses/ncursesw
 
 IUXRE = -I../libuxre -DUXRE
 LUXRE = -L../libuxre -luxre

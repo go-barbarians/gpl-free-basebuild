@@ -30,7 +30,6 @@
 #undef	_FILE_OFFSET_BITS
 #endif	/* !__linux__ */
 
-#define __UCLIBC__
 
 #include	<sys/types.h>
 #include	<sys/stat.h>

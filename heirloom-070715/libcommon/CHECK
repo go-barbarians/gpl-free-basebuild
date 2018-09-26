@@ -136,19 +136,6 @@ void *valloc (size_t);
 void *memalign(size_t, size_t);
 int getloadavg(double *, int);
 int clearenv(void);
-
-
-
-
-
-int ptsname_r(int, char *, size_t);
-char *ecvt(double, int, int *, int *);
-char *fcvt(double, int, int *, int *);
-char *gcvt(double, int, char *);
-struct __locale_struct;
-float strtof_l(const char *restrict, char **restrict, struct __locale_struct *);
-double strtod_l(const char *restrict, char **restrict, struct __locale_struct *);
-long double strtold_l(const char *restrict, char **restrict, struct __locale_struct *);
 # 25 "CHECK.c" 2
 # 77 "CHECK.c"
 

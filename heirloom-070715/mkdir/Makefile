@@ -57,7 +57,7 @@ SU3BIN = /usr/bin
 # personality, and the binary path must not be identical to the default
 # one.
 #
-UCBBIN = /usr/ucb
+UCBBIN = /usr/bin
 
 #
 # Location for development binaries. The "tsort" utility is
@@ -282,7 +282,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 ########################################################################
 ########################################################################
 
-UCBINST = $(ROOT)$(UCBBIN)/install
+UCBINST = install
 
 ICOMMON = -I../libcommon
 LCOMMON = -L../libcommon -lcommon

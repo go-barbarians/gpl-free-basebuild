@@ -31,33 +31,33 @@ ROOT = /work/barbarians/base-image/target/sysroot
 # Location for binaries that have no special personality. This location
 # may be identical to that of one of the first three personalities below.
 #
-DEFBIN = /usr/5bin
+DEFBIN = /usr/bin
 
 #
 # Location for SVID3/SVR4-style binaries.
 #
-SV3BIN = /usr/5bin
+SV3BIN = /usr/bin
 
 #
 # Location for SVID4/SVR4.2-style binaries.
 #
-S42BIN = /usr/5bin/s42
+S42BIN = /usr/bin
 
 #
 # Location for POSIX.2/SUS-style binaries.
 #
-SUSBIN = /usr/5bin/posix
+SUSBIN = /usr/bin
 
 #
 # Location for POSIX.1-2001/SUSv3-style binaries.
-SU3BIN = /usr/5bin/posix2001
+SU3BIN = /usr/bin
 
 #
 # Location for SVR4 UCB-style binaries. These do not form a complete
 # personality, and the binary path must not be identical to the default
 # one.
 #
-UCBBIN = /usr/ucb
+UCBBIN = /usr/bin
 
 #
 # Location for development binaries. The "tsort" utility is
@@ -65,18 +65,18 @@ UCBBIN = /usr/ucb
 # "Heirloom Development Tools" package are expected to be
 # installed in it.
 #
-CCSBIN = /usr/ccs/bin
+CCSBIN = /usr/bin
 
 #
 # Location for library files.
 #
-DEFLIB = /usr/5lib
+DEFLIB = /usr/lib
 
 #
 # Location for superuser-only binaries. May be identical to the
 # default binary directory.
 #
-DEFSBIN = /usr/5bin
+DEFSBIN = /usr/bin
 
 #
 # Location for manual pages (with man1, man1b ... man8 below).
@@ -127,7 +127,7 @@ TTYGRP = -g utmp
 # does not supply our needs. Use -ltermcap instead and add -DUSE_TERMCAP
 # to CPPFLAGS.
 #
-LCURS = -lcurses
+LCURS = -lncurses
 
 #
 # Socket library, necessary on Solaris and Open UNIX. If your system has
@@ -164,7 +164,7 @@ USE_BZLIB = 0
 #
 
 #CC = $(HOME)/src/diet gcc
-CC = cc
+CC = cc -static
 HOSTCC = $(CC)
 WARN=
 
@@ -180,7 +180,7 @@ LDFLAGS =
 # On AIX, -D_MTEXTEND_H should be added if mtextend.h is not found.
 # On NetBSD, add -DUSE_TERMCAP.
 #
-CPPFLAGS = -D_GNU_SOURCE
+CPPFLAGS =
 
 #
 # CFLAGS, CFLAGS2, CFLAGSS, and CFLAGSU make it possible to give special
@@ -282,10 +282,10 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 ########################################################################
 ########################################################################
 
-UCBINST = $(ROOT)$(UCBBIN)/install
+UCBINST = install
 
-ICOMMON = -I../libcommon
-LCOMMON = -L../libcommon -lcommon
+ICOMMON = -I../libcommon -I/work/barbarians/base-image/ncurses/ncursesw
+LCOMMON = -L/usr/lib/x86_64-linux-musl/ -L../libcommon -lcommon -L/work/barbarians/base-image/ncurses/ncursesw
 
 IUXRE = -I../libuxre -DUXRE
 LUXRE = -L../libuxre -luxre

@@ -403,12 +403,8 @@ main(int argc, char **argv)
 					progname, argv[optind]);
 			exit(1);
 		}
-#if !defined (__hpux) && !defined (_AIX)
-		utmpxname(argv[optind]);
-#else	/* __hpux, _AIX */
 		fprintf(stderr, "%s: %s\n", progname, strerror(errno));
 		exit(1);
-#endif	/* __hpux, _AIX */
 	}
 	if (mflag || (argc - optind == 2 && strcmp(argv[optind], "am") == 0 &&
 			(argv[optind+1][0] == 'i' ||
