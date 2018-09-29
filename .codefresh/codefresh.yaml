@@ -5,7 +5,7 @@ steps:
     description: Gets the latest packages
     image: ubuntu:16.04
     commands: 
-      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncursesw5-dev nroff
+      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncursesw5-dev groff-base
       - mkdir -p $(pwd)/musl && mkdir -p $(pwd)/musl-staging && mkdir -p $(pwd)/target/sysroot
       - cd musl; wget http://www.musl-libc.org/releases/musl-1.1.20.tar.gz; cd ..
       - bash -c "pushd musl; tar xzf musl-1.1.20.tar.gz; popd"
