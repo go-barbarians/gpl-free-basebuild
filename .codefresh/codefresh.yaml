@@ -15,12 +15,12 @@ steps:
       - mkdir -p $(pwd)/mksh
       - cd mksh; wget http://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R56c.tgz; cd ..
       - cd mksh; tar xzf mksh-R56c.tgz; cd ..
-      - bash -c "SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd mksh/mksh; PATH=$PATH:$SYSROOT/target/sysroot/bin CC=\"/codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc -static\" ./Build.sh; cp mksh $SYSROOT/target/sysroot/bin; popd"
+      - bash -c "SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd mksh/mksh; chmod +x Build.sh; PATH=$PATH:$SYSROOT/target/sysroot/bin CC=\"/codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc -static\" ./Build.sh; cp mksh $SYSROOT/target/sysroot/bin; popd"
       - mkdir -p $(pwd)/python
       - cd python; wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz; cd ..
       - cd python; tar xzf Python-2.7.13.tgz; cd ..
       - mv /usr/include/x86_64-linux-gnu /usr/include/x86_64-linux-gnu.temp
-      - bash -c "SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd python/Python-2.7.13; ./configure --prefix=$SYSROOT/target/sysroot/opt/python27 CFLAGS=\"-I$SYSROOT/target/sysroot/include -I$SYSROOT/musl/musl-1.1.20/include -I$SYSROOT/kernel-headers/x86_64/include\" LDFLAGS=\"-idirafter -L$SYSROOT/target/sysroot/lib -L$SYSROOT/target/sysroot/include -L$SYSROOT/musl/musl-1.1.20/include -L$SYSROOT/kernel-headers/x86_64/include -fPIC -lgcc\"; make; make install; popd"
+      - bash -c "export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd python/Python-2.7.13; ./configure --prefix=$SYSROOT/target/sysroot/opt/python27 CFLAGS=\"-I$SYSROOT/target/sysroot/include -I$SYSROOT/musl/musl-1.1.20/include -I$SYSROOT/kernel-headers/x86_64/include\" --disable-shared LDFLAGS=\"-idirafter -static -L$SYSROOT/target/sysroot/lib -L$SYSROOT/target/sysroot/include -L$SYSROOT/musl/musl-1.1.20/include -L$SYSROOT/kernel-headers/x86_64/include -fPIC -lgcc\"  --build=x86_64-linux-musl --host=x86_64-linux-musl; make; make install; popd"
       - bash -c "cd heirloom-070715; function checkdir() { for dd in `ls`; do if [ -d $dd ]; then if [ -f $dd/Makefile ]; then cat $dd/Makefile | sed 's/\/work\/barbarians\/base-image/\/tmp\/heirloom/g' > $dd/Makefile.2; mv $dd/Makefile.2 $dd/Makefile; fi; fi; done }; function recdir() { for d in `ls`; do if [ -d $d ]; then pushd $d; recdir; checkdir; popd; fi; done }; checkdir; recdir; cd .."
       - bash -c "SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd heirloom-070715; make clean; make; make install; pushd /tmp; mkdir -p $SYSROOT/target/sysroot; cp -R /usr/bin/* $SYSROOT/target/sysroot/user/bin; popd; popd;"
     entry_point:
