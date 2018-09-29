@@ -9,7 +9,7 @@ steps:
       - mkdir $(pwd)/musl && mkdir $(pwd)/musl-staging && mkdir -p $(pwd)/target/sysroot
       - cd musl; wget http://www.musl-libc.org/releases/musl-1.1.20.tar.gz; cd ..
       - cd musl; tar xzf musl-1.1.20.tar.gz; cd ..
-      - cd musl/musl-1.1.20; CC="gcc" ./configure --prefix=$(pwd)/../../target/sysroot CFLAGS="-fPIC" LDFLAGS="-fPIC"; make; make check; make install; cd ../..
+      - cd musl/musl-1.1.20; CC="gcc" ./configure --prefix=$(pwd)/../../target/sysroot CFLAGS="-fPIC" LDFLAGS="-fPIC"; make; make install; cd ../..
       - git clone https://github.com/sabotage-linux/kernel-headers.git 
       - cd kernel-headers; make ARCH=x86_64 DESTDIR=$(pwd)/target/sysroot CC="musl-gcc -static" install; cd ..
       - mkdir $(pwd)/mksh
