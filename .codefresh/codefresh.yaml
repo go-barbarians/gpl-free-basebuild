@@ -15,7 +15,7 @@ steps:
       - mkdir -p $(pwd)/mksh
       - cd mksh; wget http://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R56c.tgz; cd ..
       - cd mksh; tar xzf mksh-R56c.tgz; cd ..
-      - cd mksh; PATH=$PATH:$(pwd)/../target/sysroot/bin CC="musl-gcc -static" /bin/sh ./Build.sh; cp mksh $(pwd)/../target/sysroot/bin; cd ..
+      - cd mksh/mksh; PATH=$PATH:$(pwd)/../target/sysroot/bin CC="musl-gcc -static" /bin/sh ./Build.sh; cp mksh $(pwd)/../target/sysroot/bin; cd ../..
       - mkdir -p $(pwd)/python
       - cd python; wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz; cd ..
       - cd python; tar xzf Python-2.7.13.tgz; cd ..
