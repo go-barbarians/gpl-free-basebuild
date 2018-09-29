@@ -1,0 +1,42 @@
+version: '1.0'
+steps:
+  prepare:
+    title: prepare packages
+    description: Gets the latest packages
+    image: ubuntu:16.04
+    commands: 
+      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git
+      - mkdir $(pwd)/musl && mkdir $(pwd)/musl-staging && mkdir -p $(pwd)/target/sysroot
+      - cd musl; wget http://www.musl-libc.org/releases/musl-1.1.20.tar.gz; cd ..
+      - cd musl; tar xzf musl-1.1.20.tar.gz; cd ..
+      - cd musl/musl-1.1.20; CC="gcc" ./configure --prefix=$(pwd)/../../target/sysroot CFLAGS="-fPIC" LDFLAGS="-fPIC"; make; make check; make install; cd ../..
+      - git clone https://github.com/sabotage-linux/kernel-headers.git 
+      - cd kernel-headers; make ARCH=x86_64 DESTDIR=$(pwd)/target/sysroot CC="musl-gcc -static" install; cd ..
+      - mkdir $(pwd)/mksh
+      - cd mksh; wget http://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R56c.tgz; cd ..
+      - cd mksh; tar xzf mksh-R56c.tgz; cd ..
+      - cd mksh; PATH=$PATH:$(pwd)/../target/sysroot/bin CC="musl-gcc -static" /bin/sh ./Build.sh; cp mksh $(pwd)/../target/sysroot/bin; cd ..
+      - mkdir $(pwd)/python
+      - cd python; wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz; cd ..
+      - cd python; tar xzf Python-2.7.13.tgz; cd ..
+      - mv /usr/include/x86_64-linux-gnu /usr/include/x86_64-linux-gnu.temp
+      - cd python/Python-2.7.13; ./configure --prefix=$(pwd)/../target/sysroot/opt/python27 CFLAGS="-I$(pwd)/../../target/sysroot/include -I$(pwd)/../../musl/musl-1.1.20/include -I$(pwd)/../../kernel-headers/x86_64/include" LDFLAGS="-idirafter -L$(pwd)/../../target/sysroot/lib -L$(pwd)/../../target/sysroot/include -L$(pwd)/../../musl/musl-1.1.20/include -L$(pwd)/../../kernel-headers/x86_64/include -fPIC -lgcc"; make; make install; cd ../..
+      - bash -c "cd heirloom-070715; function checkdir() { for dd in `ls`; do if [ -d $dd ]; then if [ -f $dd/Makefile ]; then cat $dd/Makefile | sed 's/\/work\/barbarians\/base-image/\/tmp\/heirloom/g' > $dd/Makefile.2; mv $dd/Makefile.2 $dd/Makefile; fi; fi; done }; function recdir() { for d in `ls`; do if [ -d $d ]; then pushd $d; recdir; checkdir; popd; fi; done }; checkdir; recdir; cd .."
+      - bash -c "SYSROOT=$(pwd); pushd heirloom-070715; make clean; make; make install; pushd /tmp; mkdir -p $SYSROOT/target/sysroot; cp -R /usr/bin/*; popd; popd;"
+    entry_point:
+      - /bin/bash
+
+  build_image:
+    type: build
+    description: Building the image...
+    image-name: dockerbarbarians/gpl-free-base-image
+    tag: unstable
+
+  push_image:
+    type: push
+    description: Push image to repo
+    candidate: '${{build_image}}'
+    tag: unstable
+    credentials:
+      username: '${{DOCKER_USER}}'
+      password: '${{DOCKER_PASS}}'
