@@ -5,12 +5,12 @@ steps:
     description: Gets the latest packages
     image: ubuntu:16.04
     commands: 
-      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git
+      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncursesw5-dev
       - mkdir -p $(pwd)/musl && mkdir -p $(pwd)/musl-staging && mkdir -p $(pwd)/target/sysroot
       - cd musl; wget http://www.musl-libc.org/releases/musl-1.1.20.tar.gz; cd ..
       - cd musl; tar xzf musl-1.1.20.tar.gz; cd ..
       - cd musl/musl-1.1.20; CC="gcc" ./configure --prefix=$(pwd)/../../target/sysroot CFLAGS="-fPIC" LDFLAGS="-fPIC"; make; make install; cd ../..
-      - git clone https://github.com/sabotage-linux/kernel-headers.git 
+      - rm -rf kernel-headers; git clone https://github.com/sabotage-linux/kernel-headers.git 
       - cd kernel-headers; make ARCH=x86_64 DESTDIR=$(pwd)/target/sysroot CC="musl-gcc -static" install; cd ..
       - mkdir -p $(pwd)/mksh
       - cd mksh; wget http://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R56c.tgz; cd ..
