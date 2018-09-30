@@ -42,17 +42,17 @@ steps:
     entry_point:
       - /bin/bash
 
-  #build_image:
-  #  type: build
-  #  description: Building the image...
-  #  image-name: dockerbarbarians/gpl-free-base-image
-  #  tag: unstable
+  build_image:
+    type: build
+    description: Building the image...
+    image-name: dockerbarbarians/gpl-free-base-image
+    tag: unstable
 
-  # push_image:
-  #  type: push
-  #  description: Push image to repo
-  #  candidate: '${{build_image}}'
-  #  tag: unstable
-  #  credentials:
-  #    username: '${{DOCKER_USER}}'
-  #    password: '${{DOCKER_PASS}}'
+  push_image:
+    type: push
+    description: Push image to repo
+    candidate: '${{build_image}}'
+    tag: unstable
+    credentials:
+      username: '${{DOCKER_USER}}'
+      password: '${{DOCKER_PASS}}'
