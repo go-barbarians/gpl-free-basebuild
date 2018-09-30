@@ -10,6 +10,7 @@ steps:
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
       - aws configure set default.region eu-west-1
+      - rm -rf musl-cross-make
       - git clone https://github.com/richfelker/musl-cross-make
       - bash -c 'pushd musl-cross-make; TARGET=x86_64-linux-musl make; TARGET=x86_64-linux-musl make install; popd'
       - mkdir -p musl
