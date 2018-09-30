@@ -35,7 +35,6 @@ steps:
       - bash -c 'pushd /work/barbarians/base-image/ncurses; tar xzf ncursesw.tar.gz; popd'
       - ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/include/zlib.h /usr/include/zlib.h
       - ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/lib/libz.so.1 /usr/local/lib/libz.so.1
-      - # - bash -c 'unlink /usr/bin/cc; pushd /bin; ln -s /codefresh/volume/gpgcc cc; popd'
       - bash -c 'mkdir -p /work/barbarians/base-image/target/sysroot/usr/bin'
       - bash -c 'mkdir -p /work/barbarians/base-image/target/sysroot/usr/lib'
       - bash -c 'mkdir -p /work/barbarians/base-image/target/sysroot/usr/ucb'
