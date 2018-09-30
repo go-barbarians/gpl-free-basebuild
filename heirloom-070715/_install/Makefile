@@ -164,7 +164,7 @@ USE_BZLIB = 0
 #
 
 #CC = $(HOME)/src/diet gcc
-CC = cc
+CC = cc -static
 HOSTCC = $(CC)
 WARN=
 

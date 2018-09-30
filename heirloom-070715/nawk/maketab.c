@@ -30,6 +30,7 @@ static const char sccsid[] = "@(#)maketab.c	1.11 (gritter) 12/4/04";
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "awk.h"
 #include "y.tab.h"
 
