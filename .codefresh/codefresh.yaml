@@ -10,19 +10,21 @@ steps:
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
       - aws configure set default.region eu-west-1
-      - mkdir -p $(pwd)/musl && mkdir -p $(pwd)/musl-staging && mkdir -p $(pwd)/target/sysroot
+      - git clone https://github.com/richfelker/musl-cross-make
+      - bash -c 'pushd musl-cross-make; TARGET=x86_64-linux-musl make; TARGET=x86_64-linux-musl make install; popd'
+      - mkdir -p musl
       - cd musl; aws s3 cp s3://mvn.barbarians.io/build-deps/musl/musl-1.1.20.tar.gz .; cd ..
       - bash -c "pushd musl; tar xzf musl-1.1.20.tar.gz; popd"
-      - bash -c 'pushd musl/musl-1.1.20; CC="gcc" ./configure --prefix=/codefresh/volume/gpl-free-basebuild/target/sysroot CFLAGS="-fPIC" LDFLAGS="-fPIC"; make; make install; popd'
+      - bash -c 'pushd musl/musl-1.1.20; CC="gcc" ./configure --prefix=/codefresh/volume/gpl-free-basebuild/target/sysroot CFLAGS="-fPIC" LDFLAGS="-fPIC"; make clean; make; make install; popd'
       - bash -c 'pushd musl/musl-1.1.20; CC="gcc" ./configure CFLAGS="-fPIC" LDFLAGS="-fPIC"; make; make install; popd'
       - rm -rf kernel-headers; git clone https://github.com/sabotage-linux/kernel-headers.git 
-      - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd kernel-headers; PATH=$PATH:$SYSROOT/target/sysroot/bin make ARCH=x86_64 DESTDIR=$SYSROOT/target/sysroot CC="musl-gcc -static" install; popd'
+      - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd kernel-headers; PATH=$PATH:$SYSROOT/target/sysroot/bin make ARCH=x86_64 DESTDIR=$SYSROOT/target/sysroot CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc -static" install; popd'
       - bash -c 'mkdir zlib; pushd zlib; aws s3 cp s3://mvn.barbarians.io/build-deps/zlib/zlib-1.2.11.tar.gz .; tar xzf zlib-1.2.11.tar.gz; popd'
-      - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd zlib/zlib-1.2.11; CC="$SYSROOT/target/sysroot/bin/musl-gcc" ./configure --prefix=$SYSROOT/target/sysroot; make; make install; popd'
+      - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd zlib/zlib-1.2.11; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --prefix=$SYSROOT/target/sysroot; make; make install; popd'
       - mkdir -p $(pwd)/mksh
       - cd mksh; aws s3 cp s3://mvn.barbarians.io/build-deps/mksh/mksh-R56c.tgz .; cd ..
       - cd mksh; tar xzf mksh-R56c.tgz; cd ..
-      - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd mksh/mksh; chmod +x Build.sh; PATH=$PATH:$SYSROOT/target/sysroot/bin CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./Build.sh; cp mksh $SYSROOT/target/sysroot/bin; popd'
+      - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd mksh/mksh; chmod +x Build.sh; PATH=$PATH:$SYSROOT/target/sysroot/bin CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc -static" ./Build.sh; cp mksh $SYSROOT/target/sysroot/bin; popd'
       - mkdir -p $(pwd)/python
       - cd python; aws s3 cp s3://mvn.barbarians.io/build-deps/python/Python-2.7.13.tgz .; cd ..
       - cd python; tar xzf Python-2.7.13.tgz; cd ..
@@ -33,15 +35,20 @@ steps:
       - bash -c 'pushd /work/barbarians/base-image/ncurses; tar xzf ncursesw.tar.gz; popd'
       - ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/include/zlib.h /usr/include/zlib.h
       - ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/lib/libz.so.1 /usr/local/lib/libz.so.1
-      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd python/Python-2.7.13; CC="$SYSROOT/target/sysroot/bin/musl-gcc" ./configure --prefix=$SYSROOT/target/sysroot/opt/python27 CFLAGS="-I$SYSROOT/kernel-headers/generic/include -I$SYSROOT/ncurses/ -I$SYSROOT/ncurses/ncursesw -I$SYSROOT/target/sysroot/include -I$SYSROOT/musl/musl-1.1.20/include -I$SYSROOT/kernel-headers/x86_64/include" LDFLAGS="-idirafter -L$SYSROOT/target/sysroot/lib -L$SYSROOT/musl/musl-1.1.20/lib -L$SYSROOT/target/sysroot/lib -fPIC -lgcc"; make clean; make; make install; popd'
-      - bash -c 'unlink /usr/bin/cc; pushd /bin; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc cc; popd'
+      - # - bash -c 'unlink /usr/bin/cc; pushd /bin; ln -s /codefresh/volume/gpgcc cc; popd'
       - bash -c 'mkdir -p /work/barbarians/base-image/target/sysroot/usr/bin'
       - bash -c 'mkdir -p /work/barbarians/base-image/target/sysroot/usr/lib'
       - bash -c 'mkdir -p /work/barbarians/base-image/target/sysroot/usr/ucb'
+      - bash -c 'mkdir -p libffi; pushd libffi; aws s3 cp s3://mvn.barbarians.io/build-deps/libffi/libffi-3.2.1.tar.gz .; popd'
+      - bash -c 'pushd libffi; tar xzf libffi-3.2.1.tar.gz; popd;'
+      - bash -c 'unlink /lib/cpp; ln -s /codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-cpp /lib/cpp'
+      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd libffi/libffi-3.2.1; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot; make; make install; popd'
       - bash -c 'pushd /work/barbarians/base-image/target/sysroot/usr; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local local; popd'
       - bash -c 'pushd /work/barbarians/base-image/target/sysroot/usr; ln -s /usr/bin/install /work/barbarians/base-image/target/sysroot/usr/ucb/install; popd'
       - bash -c 'pushd ncurses; aws s3 cp s3://mvn.barbarians.io/build-deps/ncurses/ncurses.tar.gz .; tar xzf ncurses.tar.gz; popd;'
-      - bash -c 'pushd ncurses/ncurses-6.1-20180929; SYSROOT=/codefresh/volume/gpl-free-basebuild CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-fPIC" LDFLAGS="-fPIC" ./configure; make; make install; popd'
+      - bash -c 'unlink /usr/bin/gcc; ln -s /codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc'
+      - bash -c 'pushd ncurses/ncurses-6.1-20180929; SYSROOT=/codefresh/volume/gpl-free-basebuild CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl; make clean; make; make install; popd'
+      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd python/Python-2.7.13; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --host=x86_64-linux-musl --build=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot/opt/python27 CFLAGS="-I$SYSROOT/kernel-headers/generic/include -I$SYSROOT/ncurses/ -I$SYSROOT/ncurses/ncursesw -I$SYSROOT/target/sysroot/include -I$SYSROOT/musl/musl-1.1.20/include -I$SYSROOT/kernel-headers/x86_64/include" LDFLAGS="-idirafter -L$SYSROOT/target/sysroot/lib -L$SYSROOT/musl/musl-1.1.20/lib -L$SYSROOT/target/sysroot/lib -fPIC -lgcc"; make clean; make; make install; popd'
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd heirloom-070715; make clean; make; make install; pushd /work/barbarians/base-image/target/sysroot; mkdir -p /codefresh/volume/gpl-free-basebuild/target/sysroot; cp -R ./usr/bin/* /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; cp -R ./usr/lib/* /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/lib; popd; popd;'
       - bash -c 'unlink /work/barbarians/base-image/target/sysroot/usr/ucb/install'
     entry_point:
