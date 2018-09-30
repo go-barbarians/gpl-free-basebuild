@@ -9,3 +9,4 @@ RUN rm /usr/5bin/s42/expr
 RUN rm /usr/share/man/5man/man1/expr.1
 RUN rm /usr/share/man/5man/man1/bc.1
 RUN rm /usr/5bin/posix/expr
+RUN chmod 777 /tmp
