@@ -57,8 +57,7 @@ steps:
       - bash -c 'pushd libffi; tar xzf libffi-3.2.1.tar.gz; popd;'
       - bash -c 'unlink /lib/cpp; ln -s /codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-cpp /lib/cpp'
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd libffi/libffi-3.2.1; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot; make; make install; popd'
-
-      
+     
       - bash -c 'pushd /work/barbarians/base-image/target/sysroot/usr; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local local; popd'
       - bash -c 'pushd /work/barbarians/base-image/target/sysroot/usr; ln -s /usr/bin/install /work/barbarians/base-image/target/sysroot/usr/ucb/install; popd'
 
@@ -70,7 +69,7 @@ steps:
       # OpenSSL
       - bash -c 'rm -rf openssl; git clone https://github.com/openssl/openssl.git'
       - bash -c 'pushd openssl; git checkout OpenSSL_1_0_2-stable; popd'
-      - bash -c 'pushd openssl; CC="/codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc" CFLAGS="-I/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include -fPIC" CPPFLAGS="-fPIC" LDFLAGS="-fPIC" ./config --prefix="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/ssl" --openssldir="/codefresh/volume/gpl-free-basebuild/target/sysroot" shared no-async; popd'
+      - bash -c 'pushd openssl; CC="/codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc" CFLAGS="-I/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include -fPIC" CPPFLAGS="-fPIC" LDFLAGS="-fPIC" ./config --prefix="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local" --openssldir="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local" shared no-async; popd'
       - bash -c 'pushd openssl; make depend; make; make install; popd'
 
       # Python 2.7
