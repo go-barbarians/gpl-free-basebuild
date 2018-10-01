@@ -11,6 +11,9 @@ As such we bake in Apache Harmony but it is more useful to remotely fetch an ope
 The image includes:
 
 * [mksh](http://www.mirbsd.org/mksh.htm)
+* [libffi](https://sourceware.org/libffi/)
+* [zlib](https://zlib.net)
+* [sabotage linux kernel headers](https://github.com/sabotage-linux/kernel-headers)
 * [python2.7](https://www.python.org/download/releases/2.7/)
 * [heirloom UNIX tools](http://heirloom.sourceforge.net/tools.html) (SCO & Sun donations)
 * [openssl](https://www.openssl.org/)
