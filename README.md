@@ -11,6 +11,7 @@ As such we bake in Apache Harmony but it is more useful to remotely fetch an ope
 The image includes:
 
 * [mksh](http://www.mirbsd.org/mksh.htm)
+* [vim](https://www.vim.org/)
 * [libffi](https://sourceware.org/libffi/)
 * [zlib](https://zlib.net)
 * [sabotage linux kernel headers](https://github.com/sabotage-linux/kernel-headers)
