@@ -164,7 +164,7 @@ USE_BZLIB = 0
 #
 
 #CC = $(HOME)/src/diet gcc
-CC = cc
+CC = cc -static
 HOSTCC = $(CC)
 WARN=
 
@@ -284,8 +284,8 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 
 UCBINST = install
 
-ICOMMON = -I../libcommon
-LCOMMON = -L../libcommon -lcommon
+ICOMMON = -I../libcommon -I/work/barbarians/base-image/ncurses/ncursesw -I/work/barbarians/base-image/target/sysroot/usr/local/include
+LCOMMON = -L/usr/lib/x86_64-linux-musl/ -L../libcommon -lcommon -L/work/barbarians/base-image/ncurses/ncursesw -L/work/barbarians/base-image/target/lib -L/usr/lib
 
 IUXRE = -I../libuxre -DUXRE
 LUXRE = -L../libuxre -luxre
