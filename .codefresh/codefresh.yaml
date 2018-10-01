@@ -11,6 +11,9 @@ steps:
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
       - aws configure set default.region eu-west-1
 
+      # clean directories
+      - rm -rf /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local
+
       # Musl Cross compiler chain
       - rm -rf musl-cross-make
       - git clone https://github.com/richfelker/musl-cross-make
@@ -75,11 +78,11 @@ steps:
       # Python 2.7
       - bash -c 'unlink /usr/local/lib/libz.so.1; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/lib/libz.so.1 /usr/local/lib/libz.so.1'
       - bash -c 'unlink /usr/include/zlib.h; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/include/zlib.h /usr/include/zlib.h'
-      - bash -c 'ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libcrypto.so.1.0.0 /usr/local/lib/libcrypto.so.1.0.0'
-      - bash -c 'ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libcrypto.so.1.0.0 /usr/local/lib/libcrypto.so'
-      - bash -c 'ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libssl.so.1.0.0 /usr/local/lib/libssl.so'
-      - bash -c 'ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libssl.so.1.0.0 /usr/local/lib/libssl.so.1.0.0'
-      - bash -c 'ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include/openssl /usr/include/openssl'
+      - bash -c 'unlink /usr/local/lib/libcrypto.so.1.0.0; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libcrypto.so.1.0.0 /usr/local/lib/libcrypto.so.1.0.0'
+      - bash -c 'unlink /usr/local/lib/libcrypto.so; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libcrypto.so.1.0.0 /usr/local/lib/libcrypto.so'
+      - bash -c 'unlink /usr/local/lib/libssl.so.1.0.0; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libssl.so.1.0.0 /usr/local/lib/libssl.so'
+      - bash -c 'unlink /usr/local/lib/libssl.so; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/lib/libssl.so.1.0.0 /usr/local/lib/libssl.so.1.0.0'
+      - bash -c 'unlink /usr/include/openssl; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include/openssl /usr/include/openssl'
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd python/Python-2.7.13; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --host=x86_64-linux-musl --build=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot/opt/python27 CFLAGS="-I$SYSROOT/kernel-headers/generic/include -I$SYSROOT/target/sysroot/usr/lib/ssl/include -I$SYSROOT/ncurses/ -I$SYSROOT/ncurses/ncursesw -I$SYSROOT/target/sysroot/include -I$SYSROOT/musl/musl-1.1.20/include -I$SYSROOT/kernel-headers/x86_64/include" LDFLAGS="-idirafter -L$SYSROOT/target/sysroot/usr/local/ssl/lib -L$SYSROOT/target/sysroot/lib -L$SYSROOT/musl/musl-1.1.20/lib -L$SYSROOT/target/sysroot/lib -fPIC -lgcc"; make clean; make; make install; popd'
 
       # SCO system V tools
