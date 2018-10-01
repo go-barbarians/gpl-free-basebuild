@@ -69,8 +69,8 @@ steps:
       # OpenSSL
       - bash -c 'rm -rf openssl; git clone https://github.com/openssl/openssl.git'
       - bash -c 'pushd openssl; git checkout OpenSSL_1_0_2-stable; popd'
-      - bash -c 'pushd openssl; CC="/codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc" CFLAGS="-I/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include -fPIC" CPPFLAGS="-fPIC" LDFLAGS="-fPIC" ./config --prefix="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local" --openssldir="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local" shared no-async; popd'
-      - bash -c 'pushd openssl; make depend; make; make install; popd'
+      - bash -c 'pushd openssl; CC="/codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc" CFLAGS="-fPIC -I/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include" CPPFLAGS="-fPIC" LDFLAGS="-fPIC" ./config --prefix="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local" --openssldir="/codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local" shared no-async; popd'
+      - bash -c 'pushd openssl; make clean; make depend; make; make install; popd'
 
       # Python 2.7
       - bash -c 'unlink /usr/local/lib/libz.so.1; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/lib/libz.so.1 /usr/local/lib/libz.so.1'
