@@ -1,5 +1,0 @@
-#!/work/barbarians/base-image/target/sysroot/opt/python27/bin/python2.7
-
-from idlelib.PyShell import main
-if __name__ == '__main__':
-    main()
