@@ -11,4 +11,3 @@ RUN rm /usr/share/man/5man/man1/bc.1
 RUN rm /usr/5bin/posix/expr
 RUN mkdir -p /tmp
 RUN chmod 777 /tmp
-RUN ln -s /bin/mksh /bin/sh
