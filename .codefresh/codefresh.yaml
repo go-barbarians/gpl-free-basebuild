@@ -93,7 +93,7 @@ steps:
 
       # Vim
       - git clone https://github.com/vim/vim.git
-      - bash -c 'pushd vim; SYSROOT=/codefresh/volume/gpl-free-basebuild LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
+      - bash -c 'pushd vim; SYSROOT=/codefresh/volume/gpl-free-basebuild CFLAGS="-I$SYSROOT/target/sysroot/include" LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
 
     entry_point:
       - /bin/bash
@@ -102,13 +102,13 @@ steps:
     type: build
     description: Building the image...
     image-name: dockerbarbarians/gpl-free-base-image
-    tag: unstable
+    tag: latest
 
   push_image:
     type: push
     description: Push image to repo
     candidate: '${{build_image}}'
-    tag: unstable
+    tag: latest
     credentials:
       username: '${{DOCKER_USER}}'
       password: '${{DOCKER_PASS}}'
