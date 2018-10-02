@@ -92,9 +92,10 @@ steps:
       - bash -c 'unlink /work/barbarians/base-image/target/sysroot/usr/ucb/install'
 
       # Vim
+      - rm -rf vim
       - git clone https://github.com/vim/vim.git
       - bash -c 'pushd vim; SYSROOT=/codefresh/volume/gpl-free-basebuild CFLAGS="-I$SYSROOT/target/sysroot/include" LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
-
+      - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s vim vi; popd'
     entry_point:
       - /bin/bash
 
