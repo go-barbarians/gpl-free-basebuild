@@ -68,7 +68,7 @@ steps:
       - bash -c 'pushd ncurses; aws s3 cp s3://mvn.barbarians.io/build-deps/ncurses/ncurses.tar.gz .; tar xzf ncurses.tar.gz; popd;'
       - bash -c 'unlink /usr/bin/gcc; ln -s /codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc /usr/bin/gcc'
       - bash -c 'pushd ncurses/ncurses-6.1-20180929; SYSROOT=/codefresh/volume/gpl-free-basebuild CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl; make clean; make; make install; popd'
-      - bash -c 'pushd ncurses/ncurses-6.1-20180929; SYSROOT=/codefresh/volume/gpl-free-basebuild CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot; make clean; make; make install; popd'
+      - bash -c 'pushd ncurses/ncurses-6.1-20180929; SYSROOT=/codefresh/volume/gpl-free-basebuild CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot --with-shared; make clean; make; make install; popd'
 
       # OpenSSL
       - bash -c 'rm -rf openssl; git clone https://github.com/openssl/openssl.git'
