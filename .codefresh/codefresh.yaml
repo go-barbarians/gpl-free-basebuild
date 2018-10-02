@@ -5,7 +5,7 @@ steps:
     description: Gets the latest packages
     image: ubuntu:16.04
     commands: 
-      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncurses5-dev groff-base g++ flex g++-multilib bison python-pip xutils-dev
+      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncurses5-dev groff-base g++ flex g++-multilib bison python-pip xutils-dev bzip2
       - pip install awscli
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
@@ -87,16 +87,35 @@ steps:
       - bash -c 'unlink /usr/include/openssl; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local/include/openssl /usr/include/openssl'
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd python/Python-2.7.13; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --host=x86_64-linux-musl --build=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot/opt/python27 CFLAGS="-I$SYSROOT/kernel-headers/generic/include -I$SYSROOT/target/sysroot/usr/local/include -I$SYSROOT/ncurses/ -I$SYSROOT/ncurses/ncursesw -I$SYSROOT/target/sysroot/include -I$SYSROOT/musl/musl-1.1.20/include -I$SYSROOT/kernel-headers/x86_64/include" LDFLAGS="-idirafter -L$SYSROOT/target/sysroot/usr/local/lib -L$SYSROOT/target/sysroot/lib -L$SYSROOT/musl/musl-1.1.20/lib -L$SYSROOT/target/sysroot/lib -fPIC -lgcc"; make clean; make; make install; popd'
 
-      # SCO system V tools
+      # SCO System V tools
       - bash -c 'unlink /usr/bin/cc; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc /usr/bin/cc'
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd heirloom-070715; make clean; make; make install; pushd /work/barbarians/base-image/target/sysroot; mkdir -p /codefresh/volume/gpl-free-basebuild/target/sysroot; cp -R ./usr/bin/* /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; cp -R ./usr/lib/* /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/lib; popd; popd;'
       - bash -c 'unlink /work/barbarians/base-image/target/sysroot/usr/ucb/install'
+
+      # SCO BOURNE shell
+      - rm -f heirloom-sh-050706.tar.bz2
+      - rm -rf heirloom-sh-050706
+      - bash -c 'wget https://downloads.sourceforge.net/project/heirloom/heirloom-sh/050706/heirloom-sh-050706.tar.bz2'
+      - tar xjf heirloom-sh-050706.tar.bz2
+      - bash -c 'pushd heirloom-sh-050706; cat makefile | sed "s/#CC=diet gcc -Ifakewchar/CC=\/codefresh\/volume\/gpl-free-basebuild\/target\/sysroot\/bin\/musl-gcc/g" > makefile.2; cat makefile.2 | sed "s/ROOT=/ROOT=\/codefresh\/volume\/gpl-free-basebuild\/target\/sysroot/g" > makefile.3; mv makefile.3 makefile; make clean; make; cp sh /codefresh/volume/gpl-free-basebuild/target/sysroot/bin; popd'
+      - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/bin; ln -s sh bash; popd'
 
       # Vim
       - rm -rf vim
       - git clone https://github.com/vim/vim.git
       - bash -c 'pushd vim; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CFLAGS="-I$SYSROOT/target/sysroot/include" LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
       - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s vim vi; popd'
+
+      # cleardown
+      - rm -f heirloom-sh-050706.tar.bz2
+      - rm -rf heirloom-sh-050706
+      - rm -rf vim
+      - rm -rf openssl
+      - rm -rf libffi
+      - rm -rf python
+      - rm -rf mksh
+      - rm -rf musl-cross-make
+
     entry_point:
       - /bin/bash
 
