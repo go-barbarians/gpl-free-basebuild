@@ -92,22 +92,16 @@ steps:
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd heirloom-070715; make clean; make; make install; pushd /work/barbarians/base-image/target/sysroot; mkdir -p /codefresh/volume/gpl-free-basebuild/target/sysroot; cp -R ./usr/bin/* /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; cp -R ./usr/lib/* /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/lib; popd; popd;'
       - bash -c 'unlink /work/barbarians/base-image/target/sysroot/usr/ucb/install'
 
-      # SCO BOURNE shell
-      - rm -f heirloom-sh-050706.tar.bz2
-      - rm -rf heirloom-sh-050706
-      - bash -c 'wget https://downloads.sourceforge.net/project/heirloom/heirloom-sh/050706/heirloom-sh-050706.tar.bz2'
-      - tar xjf heirloom-sh-050706.tar.bz2
-      - bash -c 'pushd heirloom-sh-050706; cat makefile | sed "s/#CC=diet gcc -Ifakewchar/CC=\/codefresh\/volume\/gpl-free-basebuild\/target\/sysroot\/bin\/musl-gcc/g" > makefile.2; cat makefile.2 | sed "s/ROOT=/ROOT=\/codefresh\/volume\/gpl-free-basebuild\/target\/sysroot/g" > makefile.3; mv makefile.3 makefile; make clean; make; cp sh /codefresh/volume/gpl-free-basebuild/target/sysroot/bin; popd'
-      - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/bin; ln -s sh bash; popd'
-
       # Vim
       - rm -rf vim
       - git clone https://github.com/vim/vim.git
       - bash -c 'pushd vim; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CFLAGS="-I$SYSROOT/target/sysroot/include" LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
       - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s vim vi; popd'
 
+      # Remove GPL licensed tools
+      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; rm -f $SYSROOT/target/sysroot/usr/bin/bc; rm -f $SYSROOT/target/sysroot/usr/bin/expr'
+
       # cleardown
-      - rm -f heirloom-sh-050706.tar.bz2
       - rm -rf heirloom-sh-050706
       - rm -rf vim
       - rm -rf openssl
