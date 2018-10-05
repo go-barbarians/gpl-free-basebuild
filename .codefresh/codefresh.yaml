@@ -30,6 +30,10 @@ steps:
       - rm -rf kernel-headers; git clone https://github.com/sabotage-linux/kernel-headers.git 
       - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd kernel-headers; PATH=$PATH:$SYSROOT/target/sysroot/bin make ARCH=x86_64 DESTDIR=$SYSROOT/target/sysroot CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc -static" install; popd'
 
+      # Cawf
+      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd cawf; autoreconf --install; CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
+      - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s cawf nroff; popd'
+
       # Zlib
       - bash -c 'mkdir zlib; pushd zlib; aws s3 cp s3://mvn.barbarians.io/build-deps/zlib/zlib-1.2.11.tar.gz .; tar xzf zlib-1.2.11.tar.gz; popd'
       - bash -c 'SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd zlib/zlib-1.2.11; CC="$SYSROOT/musl-cross-make/output/bin/x86_64-linux-musl-gcc" ./configure --prefix=$SYSROOT/target/sysroot; make; make install; popd'
@@ -69,9 +73,7 @@ steps:
       - bash -c 'unlink /usr/bin/gcc; ln -s /codefresh/volume/gpl-free-basebuild/musl-cross-make/output/bin/x86_64-linux-musl-gcc /usr/bin/gcc'
       - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl; make clean; make; make install; popd'
       # ugly hack follows...otherwise gnu glibc on the build host breaks
-      - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot --with-shared; cp /lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libc.so; make clean; make; make install; popd'
-      # another ugly hack...try to get terminfo database to generate (circular self-dependncy on /lib/ncurses.so.6...) by running twice but with linker flag set second time
-      - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC -L$SYSROOT/target/sysroot/lib" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot --with-shared; cp /lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libc.so; make clean; make; make install; popd'
+      - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot/usr --with-shared; cp /lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libc.so; make clean; make; make install; popd'
 
       # OpenSSL
       - bash -c 'rm -rf openssl; git clone https://github.com/openssl/openssl.git'
@@ -100,10 +102,6 @@ steps:
       - bash -c 'pushd vim; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CFLAGS="-I$SYSROOT/target/sysroot/include" LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
       - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s vim vi; popd'
 
-      # Cawf
-      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd cawf; CC="/codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc -static" ./configure --prefix=$SYSROOT/usr; make clean; make; make install; popd'
-      - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s cawf nroff; popd'
-
       # Remove GPL licensed tools
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; rm -f $SYSROOT/target/sysroot/usr/bin/bc; rm -f $SYSROOT/target/sysroot/usr/bin/expr'
 
@@ -111,7 +109,7 @@ steps:
       - bash -c 'mkdir -p /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE'
       - bash -c 'cp cawf/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/cawf-LICENSE'
       - bash -c 'cp LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/barbarian-os-LICENSE'
-      - bash -c 'cp -R heirloom-sh-050706/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/heirloom-LICENSE'
+      - bash -c 'cp -R heirloom-070715/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/heirloom-LICENSE'
       - bash -c 'cp musl/musl-1.1.20/COPYRIGHT /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/musl-LICENSE'
       - bash -c 'cp libffi/libffi-3.2.1/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/libffi-LICENSE'
       - bash -c 'cp ncurses/ncurses-6.1-20180929/COPYING /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/ncurses-LICENSE'
