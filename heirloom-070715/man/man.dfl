@@ -4,7 +4,7 @@
 MANPATH=/usr/share/man/5man:/usr/node/share/man:/usr/local/share/man:/usr/ccs/share/man:/usr/old/share/man:/usr/contrib/share/man:/usr/share/man:/usr/share/man/en:/usr/X11R6/man
 
 # Command for nroff. Default is nroff -Tlp
-NROFF=GROFF_NO_SGR= GROFF_TMAC_PATH=/usr/lib/tmac${GROFF_TMAC_PATH+:$GROFF_TMAC_PATH} TROFFMACS=/usr/lib/tmac/tmac. nroff -Tlp
+NROFF=GROFF_NO_SGR= GROFF_TMAC_PATH=/usr/lib/tmac${GROFF_TMAC_PATH+:$GROFF_TMAC_PATH} TROFFMACS=/usr/lib/tmac/tmac. nroff
 
 # Command for troff (-t option). Default is troff
 TROFF=GROFF_TMAC_PATH=/usr/lib/tmac${GROFF_TMAC_PATH+:$GROFF_TMAC_PATH} TROFFMACS=/usr/lib/tmac/tmac. groff
