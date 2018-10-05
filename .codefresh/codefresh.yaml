@@ -105,6 +105,19 @@ steps:
       # Remove GPL licensed tools
       - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; rm -f $SYSROOT/target/sysroot/usr/bin/bc; rm -f $SYSROOT/target/sysroot/usr/bin/expr'
 
+      # add LICENSE files
+      - bash -c 'mkdir -p /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE'
+      - bash -c 'cp cawf/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/cawf-LICENSE'
+      - bash -c 'cp LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/barbarian-os-LICENSE'
+      - bash -c 'cp -R heirloom-sh-050706/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/heirloom-LICENSE'
+      - bash -c 'cp musl/musl-1.1.20/COPYRIGHT /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/musl-LICENSE'
+      - bash -c 'cp libffi/libffi-3.2.1/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/libffi-LICENSE'
+      - bash -c 'cp ncurses/ncurses-6.1-20180929/COPYING /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/ncurses-LICENSE'
+      - bash -c 'cp vim/README.txt /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/vim-LICENSE'
+      - bash -c 'cp python/Python-2.7.13/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/python-LICENSE'
+      - bash -c 'cp zlib/zlib-1.2.11/README /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/zlib-LICENSE'
+      - bash -c 'cp openssl/LICENSE /codefresh/volume/gpl-free-basebuild/target/sysroot/LICENSE/openssl-LICENSE'
+
       # cleardown
       - rm -rf heirloom-sh-050706
       - rm -rf vim

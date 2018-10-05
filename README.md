@@ -19,6 +19,7 @@ The image includes:
 * [heirloom UNIX tools](http://heirloom.sourceforge.net/tools.html) (SCO & Sun donations)
 * [openssl](https://www.openssl.org/)
 * [Apache Harmony](https://harmony.apache.org/)
+* [cawf](https://www.unix.com/man-page/minix/1/cawf/) - alternative to nroff
 * [musl libc](https://www.musl-libc.org/) as a replacement for glibc 
 
 Additionally the image statically links ncurses, which while part of the GNU toolset, is MIT licensed.
