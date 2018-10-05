@@ -5,7 +5,7 @@ steps:
     description: Gets the latest packages
     image: ubuntu:16.04
     commands: 
-      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncurses5-dev groff-base g++ flex g++-multilib bison python-pip xutils-dev bzip2
+      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncurses5-dev groff-base g++ flex g++-multilib bison python-pip xutils-dev bzip2 ed
       - pip install awscli
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
