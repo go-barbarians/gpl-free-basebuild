@@ -5,7 +5,7 @@ steps:
     description: Gets the latest packages
     image: ubuntu:16.04
     commands: 
-      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncurses5-dev groff-base g++ flex g++-multilib bison python-pip xutils-dev bzip2 ed
+      - apt-get update && apt-get upgrade -y && apt-get install -y wget build-essential git libncurses5-dev groff-base g++ flex g++-multilib bison python-pip xutils-dev bzip2 ed automake
       - pip install awscli
       - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
       - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
@@ -70,6 +70,8 @@ steps:
       - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl; make clean; make; make install; popd'
       # ugly hack follows...otherwise gnu glibc on the build host breaks
       - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot --with-shared; cp /lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libc.so; make clean; make; make install; popd'
+      # another ugly hack...try to get terminfo database to generate (circular self-dependncy on /lib/ncurses.so.6...) by running twice but with linker flag set second time
+      - bash -c 'pushd ncurses/ncurses-6.1-20180929; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CC="$SYSROOT/target/sysroot/bin/musl-gcc" CFLAGS="-I$SYSROOT/kernel-headers/x86_64/include -fPIC" LDFLAGS="-fPIC -L$SYSROOT/target/sysroot/lib" ./configure --host=x86_64-linux-musl --prefix=$SYSROOT/target/sysroot --with-shared; cp /lib/x86_64-linux-gnu/libc.so.6 /usr/lib/x86_64-linux-gnu/libc.so; make clean; make; make install; popd'
 
       # OpenSSL
       - bash -c 'rm -rf openssl; git clone https://github.com/openssl/openssl.git'
