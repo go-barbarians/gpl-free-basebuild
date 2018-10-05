@@ -99,7 +99,7 @@ steps:
       - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s vim vi; popd'
 
       # Cawf
-      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd cawf; CC="/codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc -static" ./configure --prefix=$SYSROOT/usr; make clean; make; make install; popd"
+      - bash -c 'export SYSROOT=/codefresh/volume/gpl-free-basebuild; pushd cawf; CC="/codefresh/volume/gpl-free-basebuild/target/sysroot/bin/musl-gcc -static" ./configure --prefix=$SYSROOT/usr; make clean; make; make install; popd'
       - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/bin; ln -s cawf nroff; popd'
 
       # Remove GPL licensed tools
