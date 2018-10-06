@@ -99,7 +99,7 @@ steps:
       # Vim
       - rm -rf vim
       - git clone https://github.com/vim/vim.git
-      - bash -c 'pushd vim; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CFLAGS="-I$SYSROOT/target/sysroot/include" LDFLAGS="-L$SYSROOT/target/sysroot/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
+      - bash -c 'pushd vim; export SYSROOT=/codefresh/volume/gpl-free-basebuild; CFLAGS="-I$SYSROOT/target/sysroot/usr/include" LDFLAGS="-L$SYSROOT/target/sysroot/usr/lib" CC="$SYSROOT/target/sysroot/bin/musl-gcc -static" ./configure --with-tlib=ncurses --prefix=$SYSROOT/target/sysroot/usr; make clean; make; make install; popd'
       - bash -c 'pushd /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/bin; ln -s vim vi; popd'
 
       # Remove GPL licensed tools

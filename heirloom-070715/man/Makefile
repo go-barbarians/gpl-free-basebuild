@@ -305,11 +305,12 @@ bang.ksh:
 	@IFS=: ;\
 	if test "`uname`" = HP-UX ;\
 	then \
-		order='bash ksh';\
+		order='ksh bash';\
 	else \
 		order='ksh bash';\
 	fi ;\
-	for shell in ksh bash ;\
+        # defaulted to bash on the build host - adapt to take system shell
+	for shell in sh ;\
 	do \
 		for dir in /bin /usr/bin $$PATH ;\
 		do \
