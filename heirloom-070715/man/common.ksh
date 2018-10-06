@@ -462,7 +462,7 @@ case "$MANPATH" in
 	MANPATH="${MANPATH%%::*}:$DEFMANPATH:${MANPATH#*::}"
 esac
 test -z "$TROFF" && TROFF=troff
-test -z "$NROFF" && NROFF='nroff -Tlp'
+test -z "$NROFF" && NROFF='nroff'
 test -z "$COL" && COL='col -x'
 test -z "$PAGER" && PAGER=pg
 test -z "$EQN" && EQN=eqn
