@@ -15,5 +15,5 @@ RUN echo "set backspace=indent,eol,start" > /root/.vimrc
 RUN echo "set number" >> /root/.vimrc
 RUN echo "syntax on" >> /root/.vimrc
 
-RUN chmod 655 /etc/passwd
+RUN chmod 644 /etc/passwd
 RUN chmod 600 /etc/shadow
