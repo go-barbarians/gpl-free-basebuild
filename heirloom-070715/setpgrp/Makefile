@@ -282,7 +282,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 ########################################################################
 ########################################################################
 
-UCBINST = $(ROOT)$(UCBBIN)/install
+UCBINST = install
 
 ICOMMON = -I../libcommon
 LCOMMON = -L../libcommon -lcommon
