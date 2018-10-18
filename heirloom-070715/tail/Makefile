@@ -50,7 +50,7 @@ SUSBIN = /usr/bin
 
 #
 # Location for POSIX.1-2001/SUSv3-style binaries.
-SU3BIN = /usr/5bin/posix2001
+SU3BIN = /usr/bin
 
 #
 # Location for SVR4 UCB-style binaries. These do not form a complete
@@ -282,7 +282,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 ########################################################################
 ########################################################################
 
-UCBINST = $(ROOT)$(UCBBIN)/install
+UCBINST = install
 
 ICOMMON = -I../libcommon -I/work/barbarians/base-image/ncurses/ncursesw -I/work/barbarians/base-image/target/sysroot/usr/local/include
 LCOMMON = -L/usr/lib/x86_64-linux-musl/ -L../libcommon -lcommon -L/work/barbarians/base-image/ncurses/ncursesw -L/work/barbarians/base-image/target/lib -L/usr/lib

@@ -283,7 +283,7 @@ RANLIB=(hash ranlib) >/dev/null 2>&1 || exit 0; ranlib
 ########################################################################
 ########################################################################
 
-UCBINST = $(ROOT)$(UCBBIN)/install
+UCBINST = install
 
 ICOMMON = -I../libcommon -I/work/barbarians/base-image/target/sysroot/usr/local/include/linux
 LCOMMON = -L../libcommon -lcommon
