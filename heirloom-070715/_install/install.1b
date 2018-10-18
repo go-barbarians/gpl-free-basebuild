@@ -26,19 +26,19 @@ install \- (BSD) install files
 .HP
 .ad l
 .nh
-\fB/usr/ucb/install\fR [\fB\-cs\fR] [\fB-g\fI\ group\fR] [\fB\-m\fI\ mode\fR]
+\fB/usr/bin/install\fR [\fB\-cs\fR] [\fB-g\fI\ group\fR] [\fB\-m\fI\ mode\fR]
 [\fB-o\fI\ owner\fR]
 \fIfile1 file2\fR
 .HP
 .ad l
 .nh
-\fB/usr/ucb/install\fR [\fB\-cs\fR] [\fB-g\fI\ group\fR] [\fB\-m\fI\ mode\fR]
+\fB/usr/bin/install\fR [\fB\-cs\fR] [\fB-g\fI\ group\fR] [\fB\-m\fI\ mode\fR]
 [\fB-o\fI\ owner\fR]
 \fIfile\fR\ .\ .\ .\ \fIdirectory\fR
 .HP
 .ad l
 .nh
-\fB/usr/ucb/install\fR \fB\-d\fR [\fB\-g\fI\ group\fR] [\fB\-m\fI\ mode\fR]
+\fB/usr/bin/install\fR \fB\-d\fR [\fB\-g\fI\ group\fR] [\fB\-m\fI\ mode\fR]
 [\fB\-o\fI\ owner\fR] \fIdirectory\fR
 .br
 .ad b

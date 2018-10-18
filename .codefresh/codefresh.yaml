@@ -13,6 +13,7 @@ steps:
 
       # clean directories
       - rm -rf /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local
+      - rm -rf /work/barbarians/base-image/target/sysroot
 
       # Musl Cross compiler chain
       - rm -rf musl-cross-make
@@ -67,6 +68,7 @@ steps:
      
       - bash -c 'pushd /work/barbarians/base-image/target/sysroot/usr; ln -s /codefresh/volume/gpl-free-basebuild/target/sysroot/usr/local local; popd'
       - bash -c 'pushd /work/barbarians/base-image/target/sysroot/usr; ln -s /usr/bin/install /work/barbarians/base-image/target/sysroot/usr/ucb/install; popd'
+      - bash -c 'mkdir -p /usr/ucb; ln -s /usr/bin/install /usr/ucb/install'
 
       # NCurses
       - bash -c 'pushd ncurses; aws s3 cp s3://mvn.barbarians.io/build-deps/ncurses/ncurses.tar.gz .; tar xzf ncurses.tar.gz; popd;'

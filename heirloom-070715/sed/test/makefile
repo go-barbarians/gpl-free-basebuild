@@ -1,5 +1,5 @@
 DST=/usr/local/games
-INSTALL=/usr/ucb/install
+INSTALL=install
 
 .SUFFIXES: .sed
 .sed:
